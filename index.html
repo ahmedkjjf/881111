@@ -5,78 +5,147 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحميل بيانات سيرفر FiveM - الزعابي</title>
     <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            max-width: 900px;
+            margin: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        .download-box {
-            margin: 20px 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            border-radius: 10px;
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        .download-box {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin: 30px 0;
+        }
+
         #url-input {
-            width: 80%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            width: 85%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
             font-size: 16px;
+            transition: all 0.3s ease;
             direction: ltr;
         }
+
+        #url-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
         .download-btn {
-            padding: 10px 20px;
-            background-color: #4CAF50;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
+
         .download-btn:hover {
-            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
-        .result-container {
-            margin: 20px 0;
-            padding: 10px;
-        }
+
         .message {
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            animation: fadeIn 0.5s ease;
         }
-        .error {
-            background-color: #ffebee;
-            color: #c62828;
-        }
+
         .success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            color: white;
         }
+
+        .error {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
         .loading {
-            background-color: #e3f2fd;
-            color: #1565c0;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
         }
+
         .download-link, .discord-link {
             display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #2196F3;
+            margin: 10px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
+
         .download-link:hover, .discord-link:hover {
-            background-color: #1976D2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
+
         .footer {
-            margin-top: 40px;
-            font-size: 14px;
-            color: #666;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* إضافة تأثيرات التحميل */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -204,12 +273,40 @@
 
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
-            messageDiv.textContent = message;
+            
+            if (type === 'loading') {
+                const spinner = document.createElement('div');
+                spinner.className = 'loading-spinner';
+                messageDiv.appendChild(spinner);
+            }
+            
+            const messageText = document.createElement('span');
+            messageText.textContent = message;
+            messageDiv.appendChild(messageText);
 
             resultDiv.appendChild(messageDiv);
-            if (element1) resultDiv.appendChild(element1);
-            if (element2) resultDiv.appendChild(element2);
+            
+            if (element1) {
+                setTimeout(() => {
+                    resultDiv.appendChild(element1);
+                    element1.style.animation = 'fadeIn 0.5s ease';
+                }, 500);
+            }
+            
+            if (element2) {
+                setTimeout(() => {
+                    resultDiv.appendChild(element2);
+                    element2.style.animation = 'fadeIn 0.5s ease';
+                }, 800);
+            }
         }
+
+        // إضافة مستمع لمفتاح Enter
+        document.getElementById('url-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleDownload();
+            }
+        });
     </script>
 </body>
 </html>
