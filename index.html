@@ -3,6 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إحصائيات السيرفرات - الزعابي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            color: #3498db;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .chart-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>إحصائيات السيرفرات</h1>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="total-servers">0</div>
+                <div class="stat-label">إجمالي السيرفرات</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="total-downloads">0</div>
+                <div class="stat-label">عمليات التحميل</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="active-users">0</div>
+                <div class="stat-label">المستخدمين النشطين</div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="downloadsChart"></canvas>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="serversChart"></canvas>
+        </div>
+
+        
+
+        <div class="footer">
+            <p>&copy; 2025 جميع الحقوق محفوظة لـ الزعابي</p>
+        </div>
+    </div>
+
+    <script>
+        // تحديث الإحصائيات
+        function updateStats() {
+            // هنا يمكنك إضافة منطق لجلب الإحصائيات الحقيقية من قاعدة البيانات
+            document.getElementById('total-servers').textContent = '1,234';
+            document.getElementById('total-downloads').textContent = '5,678';
+            document.getElementById('active-users').textContent = '890';
+        }
+
+        // إنشاء الرسم البياني للتحميلات
+        function createDownloadsChart() {
+            const ctx = document.getElementById('downloadsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو'],
+                    datasets: [{
+                        label: 'عمليات التحميل الشهرية',
+                        data: [650, 850, 1200, 980, 1600, 1450],
+                        borderColor: '#3498db',
+                        tension: 0.4,
+                        fill: true,
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'إحصائيات التحميل الشهرية'
+                        }
+                    }
+                }
+            });
+        }
+
+        // إنشاء الرسم البياني للسيرفرات
+        function createServersChart() {
+            const ctx = document.getElementById('serversChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['سيرفرات عربية', 'سيرفرات أجنبية', 'سيرفرات مختلطة'],
+                    datasets: [{
+                        label: 'توزيع السيرفرات',
+                        data: [450, 300, 200],
+                        backgroundColor: [
+                            'rgba(52, 152, 219, 0.7)',
+                            'rgba(46, 204, 113, 0.7)',
+                            'rgba(155, 89, 182, 0.7)'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'توزيع أنواع السيرفرات'
+                        }
+                    }
+                }
+            });
+        }
+
+        // تحديث البيانات عند تحميل الصفحة
+        window.onload = function() {
+            updateStats();
+            createDownloadsChart();
+            createServersChart();
+        };
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحميل بيانات سيرفر FiveM - الزعابي</title>
     <style>
         * {
@@ -273,26 +491,26 @@
 
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}`;
-            
+
             if (type === 'loading') {
                 const spinner = document.createElement('div');
                 spinner.className = 'loading-spinner';
                 messageDiv.appendChild(spinner);
             }
-            
+
             const messageText = document.createElement('span');
             messageText.textContent = message;
             messageDiv.appendChild(messageText);
 
             resultDiv.appendChild(messageDiv);
-            
+
             if (element1) {
                 setTimeout(() => {
                     resultDiv.appendChild(element1);
                     element1.style.animation = 'fadeIn 0.5s ease';
                 }, 500);
             }
-            
+
             if (element2) {
                 setTimeout(() => {
                     resultDiv.appendChild(element2);
@@ -310,3 +528,122 @@
     </script>
 </body>
 </html>
+<head>
+    <!-- ... الكود الموجود ... -->
+    <style>
+        /* ... الأنماط الموجودة ... */
+
+        /* إضافة أنماط وضع الظلام */
+        :root {
+            --bg-color: #f5f7fa;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --container-bg: rgba(255, 255, 255, 0.95);
+            --text-color: #2c3e50;
+            --card-bg: white;
+            --border-color: #eee;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --bg-gradient: linear-gradient(135deg, #2c3e50 0%, #1a1a1a 100%);
+            --container-bg: rgba(33, 33, 33, 0.95);
+            --text-color: #ffffff;
+            --card-bg: #333333;
+            --border-color: #444;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+        }
+
+        .container {
+            background: var(--container-bg);
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+        }
+
+        .chart-container {
+            background: var(--card-bg);
+        }
+
+        h1 {
+            color: var(--text-color);
+        }
+
+        .footer {
+            border-top-color: var(--border-color);
+        }
+
+        /* أنماط زر التبديل */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- إضافة زر التبديل بعد بداية الـ body مباشرة -->
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌞</span>
+        <span id="theme-text">وضع الظلام</span>
+    </button>
+
+    <!-- ... باقي محتوى الـ body ... -->
+
+    <script>
+        // إضافة دالة تبديل الثيم
+        function toggleTheme() {
+            const body = document.documentElement;
+            const currentTheme = body.getAttribute('data-theme');
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                icon.textContent = '🌞';
+                text.textContent = 'وضع الظلام';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                icon.textContent = '🌙';
+                text.textContent = 'وضع النهار';
+                localStorage.setItem('theme', 'dark');
+            }
+
+            // تحديث الرسوم البيانية إذا كانت موجودة
+            if (typeof createDownloadsChart === 'function') {
+                createDownloadsChart();
+                createServersChart();
+            }
+        }
+
+        // التحقق من الثيم المحفوظ عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('theme-icon').textContent = '🌙';
+                document.getElementById('theme-text').textContent = 'وضع النهار';
+            }
+        });
+    </script>
+</body>
